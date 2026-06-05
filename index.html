@@ -1,69 +1,127 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Clicker Alvin Cybers</title>
+  <title>Clicker Alvin Cybers PRO</title>
   <style>
     body {
-      background: url('https://i.imgur.com/8zQZQYQ.jpg') no-repeat center fixed;
-      background-size: cover;
+      background: linear-gradient(135deg, #000, #0a0a2a, #001a33);
       color: white;
       text-align: center;
-      font-family: Arial;
-      padding-top: 50px;
+      font-family: 'Courier New', monospace;
+      padding-top: 30px;
       margin: 0;
+      overflow: hidden;
     }
-    body::before {
-      content: "";
+    /* Partikel Matrix jatuh */
+    canvas {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
       z-index: -1;
     }
     h1 {
-      font-size: 40px;
-      text-shadow: 0 0 20px cyan;
-      animation: glow 2s infinite;
+      font-size: 45px;
+      text-shadow: 0 0 10px cyan, 0 0 20px cyan;
+      animation: glow 1.5s infinite alternate;
+      margin-bottom: 10px;
     }
     #score {
-      font-size: 80px;
-      color: lime;
+      font-size: 100px;
+      color: #00ff00;
       font-weight: bold;
-      margin: 30px;
-      text-shadow: 0 0 30px lime;
+      margin: 20px;
+      text-shadow: 0 0 30px #00ff00, 0 0 60px #00ff00;
+      animation: pulse 0.3s;
     }
     button {
-      background: linear-gradient(45deg, lime, cyan);
+      background: linear-gradient(45deg, #00ff00, #00ffff);
       color: black;
-      border: none;
-      padding: 40px 80px;
-      font-size: 30px;
+      border: 3px solid cyan;
+      padding: 50px 100px;
+      font-size: 35px;
       font-weight: bold;
-      border-radius: 20px;
+      border-radius: 25px;
       cursor: pointer;
       transition: 0.1s;
-      box-shadow: 0 0 30px lime;
+      box-shadow: 0 0 40px cyan;
     }
     button:active {
-      transform: scale(0.9);
+      transform: scale(0.85);
+      box-shadow: 0 0 10px cyan;
     }
     @keyframes glow {
-      0%, 100% { text-shadow: 0 0 20px cyan; }
-      50% { text-shadow: 0 0 40px cyan, 0 0 60px blue; }
+      from { text-shadow: 0 0 10px cyan; }
+      to { text-shadow: 0 0 30px cyan, 0 0 50px blue; }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+   .click-effect {
+      position: absolute;
+      color: lime;
+      font-size: 30px;
+      font-weight: bold;
+      pointer-events: none;
+      animation: float 1s ease-out forwards;
+    }
+    @keyframes float {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-100px); }
     }
   </style>
 </head>
 <body>
-  <h1>🔥 CLICKER ALVIN CYBERS 🔥</h1>
+  <canvas id="matrix"></canvas>
+  <h1>🔥 CLICKER ALVIN CYBERS PRO 🔥</h1>
   <div id="score">0</div>
-  <button onclick="tambah()">KLIK CEPET!!</button>
+  <button onclick="tambah(event)">TAP SINI!!</button>
 
   <script>
     let skor = 0;
-    function tambah() {
+    function tambah(e) {
       skor++;
       document.getElementById('score').innerText = skor;
+
+      // Efek +1 melayang pas klik
+      let effect = document.createElement('div');
+      effect.className = 'click-effect';
+      effect.innerText = '+1';
+      effect.style.left = e.clientX + 'px';
+      effect.style.top = e.clientY + 'px';
+      document.body.appendChild(effect);
+      setTimeout(() => effect.remove(), 1000);
     }
+
+    // Partikel Matrix jatuh
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0f0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 35);
   </script>
 </body>
 </html>
