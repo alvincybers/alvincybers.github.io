@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Clicker Alvin Cybers FIX</title>
+  <title>Game Alvin Chapers</title>
   <style>
     body {
-      background: linear-gradient(135deg, #000, #0a0a2a, #001a33);
+      background: linear-gradient(135deg, #001133, #330044, #001a33);
       color: white;
       text-align: center;
       font-family: 'Courier New', monospace;
@@ -17,17 +17,17 @@
       top: 0; left: 0;
       z-index: -1;
     }
-   .marquee {
+  .marquee {
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
       position: fixed;
       top: 10px;
       font-size: 20px;
-      color: cyan;
-      text-shadow: 0 0 10px cyan;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
     }
-   .marquee span {
+  .marquee span {
       display: inline-block;
       padding-left: 100%;
       animation: scroll 8s linear infinite;
@@ -35,6 +35,142 @@
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
+    }
+    h1 {
+      font-size: 38px;
+      text-shadow: 0 0 20px #00ffff;
+      margin-top: 50px;
+      color: #00ffff;
+    }
+    #score {
+      font-size: 100px;
+      color: #ff00ff;
+      font-weight: bold;
+      margin: 30px;
+      text-shadow: 0 0 30px #ff00ff;
+    }
+    button {
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      color: black;
+      border: 3px solid #00ffff;
+      padding: 50px 100px;
+      font-size: 35px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 0 40px #00ffff;
+    }
+    button:active {
+      transform: scale(0.85);
+    }
+  .click-effect {
+      position: absolute;
+      color: #ffff00;
+      font-size: 30px;
+      font-weight: bold;
+      pointer-events: none;
+      animation: float 1s ease-out forwards;
+    }
+    @keyframes float {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-100px); }
+    }
+  .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      font-size: 14px;
+      color: #aaa;
+      text-shadow: 0 0 5px black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="marquee"><span>🎮 GAME ALVIN CHAPERS 🎮 DEVELOPER ALVIN CHAPERS 🎮</span></div>
+
+  <h1>CLICKER ALVIN CHAPERS</h1>
+  <div id="score">0</div>
+  <button onclick="tambah(event)">TAP SINI!!</button>
+
+  <!-- TULISAN AMAN WKWK -->
+  <div class="footer">⚠️ Game ini aman dan cocok untuk dimainkan saat Anda di ruangan kosong ⚠️<br>Developer: Alvin Chapers</div>
+
+  <script>
+    let skor = localStorage.getItem('alvinScore') || 0;
+    document.getElementById('score').innerText = skor;
+
+    // SUARA DJ KECAU OTOMATIS WKWK
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playClick() {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = 'square';
+      osc.frequency.value = 900; // nada DJ tinggi
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    // BEAT DJ BACKGROUND WKWK DUT DUT DUT
+    setInterval(() => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.value = 100; // bass DJ
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.2);
+    }, 500); // tiap 0.5 detik bunyi wkwk
+
+    function tambah(e) {
+      skor++;
+      document.getElementById('score').innerText = skor;
+      localStorage.setItem('alvinScore', skor);
+      playClick();
+
+      let effect = document.createElement('div');
+      effect.className = 'click-effect';
+      effect.innerText = '+1';
+      effect.style.left = e.clientX + 'px';
+      effect.style.top = e.clientY + 'px';
+      document.body.appendChild(effect);
+      setTimeout(() => effect.remove(), 1000);
+    }
+
+    // MATRIX HACKER DIIKIT WKWK WARNA BIRU
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    const chars = "01ABCDEFアイウエオ";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 20, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ffff'; // ganti ijo jadi biru cyber
+      ctx.font = fontSize + 'px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 40);
+  </script>
+</body>
+</html>      100% { transform: translateX(-100%); }
     }
     h1 {
       font-size: 40px;
