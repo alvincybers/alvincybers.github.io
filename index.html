@@ -1,41 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Game Alvin Cybers</title>
+  <title>Clicker Alvin Cybers</title>
   <style>
     body {
-      background: black;
-      color: lime;
+      background: url('https://i.imgur.com/8zQZQYQ.jpg') no-repeat center fixed;
+      background-size: cover;
+      color: white;
       text-align: center;
       font-family: Arial;
-      padding-top: 100px;
+      padding-top: 50px;
+      margin: 0;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: -1;
     }
     h1 {
-      animation: kedip 1s infinite;
+      font-size: 40px;
+      text-shadow: 0 0 20px cyan;
+      animation: glow 2s infinite;
+    }
+    #score {
+      font-size: 80px;
+      color: lime;
+      font-weight: bold;
+      margin: 30px;
+      text-shadow: 0 0 30px lime;
     }
     button {
-      background: lime;
+      background: linear-gradient(45deg, lime, cyan);
       color: black;
       border: none;
-      padding: 20px 40px;
-      font-size: 20px;
-      border-radius: 10px;
+      padding: 40px 80px;
+      font-size: 30px;
+      font-weight: bold;
+      border-radius: 20px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.1s;
+      box-shadow: 0 0 30px lime;
     }
-    button:hover {
-      transform: scale(1.2) rotate(5deg);
-      box-shadow: 0 0 20px lime;
+    button:active {
+      transform: scale(0.9);
     }
-    @keyframes kedip {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px cyan; }
+      50% { text-shadow: 0 0 40px cyan, 0 0 60px blue; }
     }
   </style>
 </head>
 <body>
-  <h1>🔥 GAME ALVIN CYBERS 🔥</h1>
-  <p>Klik tombol di bawah wkwk</p>
-  <button onclick="alert('BOOM! Lu kena prank wkwk')">KLIK GUE DONG</button>
+  <h1>🔥 CLICKER ALVIN CYBERS 🔥</h1>
+  <div id="score">0</div>
+  <button onclick="tambah()">KLIK CEPET!!</button>
+
+  <script>
+    let skor = 0;
+    function tambah() {
+      skor++;
+      document.getElementById('score').innerText = skor;
+    }
+  </script>
 </body>
 </html>
